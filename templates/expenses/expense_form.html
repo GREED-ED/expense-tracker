@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if object %}
+        Edit Expense
+    {% else %}
+        Add Expense
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+    {% if object %}
+        <h1>Edit Expense</h1>
+    {% else %}
+        <h1>Add Expense</h1>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            {% if object %}
+                Update Expense
+            {% else %}
+                Save Expense
+            {% endif %}
+        </button>
+
+        <a href="{% url 'expense-list' %}">
+            Cancel
+        </a>
+    </form>
+
+</div>
+
+{% endblock %}

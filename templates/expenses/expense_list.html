@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}My Expenses{% endblock %}
+
+{% block content %}
+
+<div class="card">
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h1>My Expenses</h1>
+            <p>Track and manage your personal expenses.</p>
+        </div>
+
+        <a class="button" href="{% url 'expense-create' %}">
+            Add Expense
+        </a>
+    </div>
+
+    {% if expenses %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for expense in expenses %}
+                    <tr>
+                        <td>{{ expense.title }}</td>
+                        <td>Rs. {{ expense.amount }}</td>
+                        <td>{{ expense.category }}</td>
+                        <td>{{ expense.date }}</td>
+
+                        <td>
+                            <a href="{% url 'expense-update' expense.pk %}">
+                                Edit
+                            </a>
+
+                            <a href="{% url 'expense-delete' expense.pk %}">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+
+        <p>You don't have any expenses yet.</p>
+
+        <a class="button" href="{% url 'expense-create' %}">
+            Add your first expense
+        </a>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
