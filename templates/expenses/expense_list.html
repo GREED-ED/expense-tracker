@@ -3,65 +3,92 @@
 {% block title %}My Expenses{% endblock %}
 
 {% block content %}
-
 <div class="card">
 
-    <div style="display: flex; justify-content: space-between; align-items: center;">
+    <!-- Header Section -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
         <div>
-            <h1>My Expenses</h1>
-            <p>Track and manage your personal expenses.</p>
+            <h1 style="margin-bottom: 4px;">My Expenses</h1>
+            <p style="color: #666; margin-top: 0; margin-bottom: 16px;">
+                Track and manage your personal expenses.
+            </p>
+            <p style="margin-bottom: 0;">
+                <strong>Total this month: Rs. {{ monthly_total|floatformat:2 }}</strong>
+            </p>
         </div>
 
         <a class="button" href="{% url 'expense-create' %}">
-            Add Expense
+            + Add Expense
         </a>
     </div>
 
+    <!-- Filter Form -->
+    <form method="get" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 24px; background: #f9f9f9; padding: 16px; border-radius: 8px;">
+        <div>
+            <label for="category" style="display: block; font-size: 0.85rem; margin-bottom: 4px;">Category</label>
+            <select name="category" id="category">
+                <option value="">All Categories</option>
+                <option value="Food" {% if request.GET.category == "Food" %}selected{% endif %}>Food</option>
+                <option value="Transport" {% if request.GET.category == "Transport" %}selected{% endif %}>Transport</option>
+                <option value="Shopping" {% if request.GET.category == "Shopping" %}selected{% endif %}>Shopping</option>
+                <option value="Bills" {% if request.GET.category == "Bills" %}selected{% endif %}>Bills</option>
+                <option value="Other" {% if request.GET.category == "Other" %}selected{% endif %}>Other</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="start_date" style="display: block; font-size: 0.85rem; margin-bottom: 4px;">From</label>
+            <input type="date" name="start_date" id="start_date" value="{{ request.GET.start_date }}">
+        </div>
+
+        <div>
+            <label for="end_date" style="display: block; font-size: 0.85rem; margin-bottom: 4px;">To</label>
+            <input type="date" name="end_date" id="end_date" value="{{ request.GET.end_date }}">
+        </div>
+
+        <div style="display: flex; align-items: flex-end; gap: 8px; margin-top: auto;">
+            <button type="submit">Filter</button>
+            <a href="{% url 'expense-list' %}" style="padding: 6px 12px; text-decoration: none; color: #666;">Clear</a>
+        </div>
+    </form>
+
+    <!-- Expenses Table or Empty State -->
     {% if expenses %}
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Amount</th>
-                    <th>Category</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {% for expense in expenses %}
-                    <tr>
-                        <td>{{ expense.title }}</td>
-                        <td>Rs. {{ expense.amount }}</td>
-                        <td>{{ expense.category }}</td>
-                        <td>{{ expense.date }}</td>
-
-                        <td>
-                            <a href="{% url 'expense-update' expense.pk %}">
-                                Edit
-                            </a>
-
-                            <a href="{% url 'expense-delete' expense.pk %}">
-                                Delete
-                            </a>
-                        </td>
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="text-align: left; border-bottom: 2px solid #eee;">
+                        <th style="padding: 10px;">Title</th>
+                        <th style="padding: 10px;">Amount</th>
+                        <th style="padding: 10px;">Category</th>
+                        <th style="padding: 10px;">Date</th>
+                        <th style="padding: 10px; text-align: right;">Actions</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
+                </thead>
+                <tbody>
+                    {% for expense in expenses %}
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 10px;">{{ expense.title }}</td>
+                            <td style="padding: 10px;">Rs. {{ expense.amount }}</td>
+                            <td style="padding: 10px;">{{ expense.category }}</td>
+                            <td style="padding: 10px;">{{ expense.date }}</td>
+                            <td style="padding: 10px; text-align: right;">
+                                <a href="{% url 'expense-update' expense.pk %}" style="margin-right: 8px;">Edit</a>
+                                <a href="{% url 'expense-delete' expense.pk %}" style="color: #d9534f;">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% else %}
-
-        <p>You don't have any expenses yet.</p>
-
-        <a class="button" href="{% url 'expense-create' %}">
-            Add your first expense
-        </a>
-
+        <div style="text-align: center; padding: 40px 0;">
+            <p style="color: #666; margin-bottom: 16px;">You don't have any expenses yet.</p>
+            <a class="button" href="{% url 'expense-create' %}">
+                Add your first expense
+            </a>
+        </div>
     {% endif %}
 
 </div>
-
 {% endblock %}

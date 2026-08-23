@@ -10,30 +10,37 @@
 
 {% block content %}
 
-<div class="card">
+<div class="card" style="max-width: 600px; margin: 40px auto; padding: 24px;">
 
-    {% if object %}
-        <h1>Edit Expense</h1>
-    {% else %}
-        <h1>Add Expense</h1>
-    {% endif %}
+    <h1 style="margin-top: 0; margin-bottom: 20px;">
+        {% if object %}
+            Edit Expense
+        {% else %}
+            Add Expense
+        {% endif %}
+    </h1>
 
-    <form method="post">
+    <form method="post" style="display: flex; flex-direction: column; gap: 16px;">
         {% csrf_token %}
 
-        {{ form.as_p }}
+        <!-- Style Django form paragraphs nicely -->
+        <div class="form-container">
+            {{ form.as_p }}
+        </div>
 
-        <button type="submit">
-            {% if object %}
-                Update Expense
-            {% else %}
-                Save Expense
-            {% endif %}
-        </button>
+        <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
+            <button type="submit">
+                {% if object %}
+                    Update Expense
+                {% else %}
+                    Save Expense
+                {% endif %}
+            </button>
 
-        <a href="{% url 'expense-list' %}">
-            Cancel
-        </a>
+            <a href="{% url 'expense-list' %}" style="text-decoration: none; color: #666; padding: 8px 12px;">
+                Cancel
+            </a>
+        </div>
     </form>
 
 </div>
