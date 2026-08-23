@@ -1,6 +1,6 @@
 # Django Expense Tracker
 
-A simple personal expense tracker built with Django.
+A simple Django web application for tracking personal expenses. Authenticated users can create, view, update, and delete their own expenses. Built with Django's built-in authentication system, a custom user model, and class-based views.
 
 ## Features
 
@@ -28,12 +28,37 @@ A simple personal expense tracker built with Django.
 
 ```text
 expense-tracker/
-├── expense_tracker/
-├── expenses/
-├── templates/
+├── db.sqlite3
 ├── manage.py
+├── README.md
 ├── requirements.txt
-└── README.md
+├── expense_tracker/
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── expenses/
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── views.py
+│   └── migrations/
+│       ├── __init__.py
+│       ├── 0001_initial.py
+│       └── 0002_expense.py
+└── templates/
+    ├── base.html
+    ├── expenses/
+    │   ├── expense_confirm_delete.html
+    │   ├── expense_form.html
+    │   └── expense_list.html
+    └── registration/
+        ├── login.html
+        └── register.html
 ```
 
 ## Setup
